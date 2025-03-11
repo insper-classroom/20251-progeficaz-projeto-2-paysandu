@@ -3,13 +3,18 @@ from flask import request
 import os
 import mysql.connector
 from mysql.connector import Error
+from dotenv import load_dotenv
+
+load_dotenv('.env')
 
 
-config= {
+config = {
     'user': os.getenv('MYSQL_USER'),
     'password': os.getenv('MYSQL_PASSWORD'),
     'host': os.getenv('MYSQL_HOST'),
-    'database': os.getenv('MYSQL_DATABASE')
+    'database': os.getenv('MYSQL_DATABASE'),
+    'port': os.getenv('MYSQL_PORT'),
+    'ssl_ca': os.getenv('MYSQL_SSL_CA'),
 }
 
 def connect_db():
@@ -48,7 +53,7 @@ def get_imovel(id):
             cursor.execute(f"SELECT * FROM imoveis WHERE id = {id}")
             data = cursor.fetchone()
             cunn.close()
-            return data
+            return {"imoveis": data}
         else:
             return {"erro": "Não foi possível conectar ao banco de dados"}
     except Error as err:
@@ -63,8 +68,8 @@ def add_imovel():
         if cunn:
             cursor = cunn.cursor()
             cursor.execute(
-                "INSERT INTO imoveis (id, logradouro, tipo_logradouro, bairro, cidade, cep, tipo, valor, data_aquisicao) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                (data['id'], data['logradouro'], data['tipo_logradouro'], data['bairro'], data['cidade'], data['cep'], data['tipo'], data['valor'], data['data_aquisicao'])
+                "INSERT INTO imoveis ( logradouro, tipo_logradouro, bairro, cidade, cep, tipo, valor, data_aquisicao) VALUES ( %s, %s, %s, %s, %s, %s, %s, %s)",
+                ( data['logradouro'], data['tipo_logradouro'], data['bairro'], data['cidade'], data['cep'], data['tipo'], data['valor'], data['data_aquisicao'])
             )
             cunn.commit()
             cunn.close()
@@ -141,3 +146,5 @@ def get_imoveis_por_cidade(cidade):
             return {"erro": "Não foi possível conectar ao banco de dados"}
     except Error as err:
         return {"erro": f"Erro: {err}"}
+if __name__ == '__main__':
+    app.run(debug=True)

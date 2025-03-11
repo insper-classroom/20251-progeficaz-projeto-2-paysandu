@@ -40,7 +40,7 @@ def testa_listar_imovel_por_id(mock_connect_db, client):
 
     response = client.get('/imoveis/2')
     assert response.status_code == 200
-    expected = {'id':2, 'logradouro':'Price Prairie', 'tipo_logradouro':'Travessa', 'bairro':'Colonton', 'cidade':'North Garyville', 'cep':'93354', 'tipo':'casa em condominio', 'valor':'260070', 'data_aquisicao':'2021-11-30'}
+    expected = {'imoveis':{'id':2, 'logradouro':'Price Prairie', 'tipo_logradouro':'Travessa', 'bairro':'Colonton', 'cidade':'North Garyville', 'cep':'93354', 'tipo':'casa em condominio', 'valor':'260070', 'data_aquisicao':'2021-11-30'}}
     assert response.json == expected
 @patch("servidor.connect_db")
 def testa_adicionar_imovel(mock_connect_db, client):
@@ -50,7 +50,6 @@ def testa_adicionar_imovel(mock_connect_db, client):
     mock_connect_db.return_value = mock_conn
 
     new_property = {
-        'id': 4,
         'logradouro': 'Oak Street',
         'tipo_logradouro': 'Rua',
         'bairro': 'Downtown',
