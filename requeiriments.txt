@@ -2,3 +2,4 @@ flask
 mysql.connector
 pytest
 dotenv
+gunicorn
