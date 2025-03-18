@@ -19,7 +19,7 @@ def testa_resposta(mock_connect_db, client):
 ]
     mock_connect_db.return_value = mock_conn
 
-    reponse=client.get('/')
+    reponse=client.get('/allimoveis')
     assert reponse.status_code == 200
     expected = {'imoveis':[{'id':2, 'logradouro':'Price Prairie', 'tipo_logradouro':'Travessa', 'bairro':'Colonton', 'cidade':'North Garyville', 'cep':'93354', 'tipo':'casa em condominio', 'valor':'260070', 'data_aquisicao':'2021-11-30'
     },
@@ -84,7 +84,7 @@ def testa_atualizar_imovel(mock_connect_db, client):
     }
 
     response = client.put('/imoveis/2/update', json=updated_property)
-    assert response.status_code == 200
+    assert response.status_code == 201
 @patch("servidor.connect_db")
 def testa_remover_imovel(mock_connect_db, client):
     mock_conn = MagicMock()
