@@ -30,7 +30,7 @@ def connect_db():
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/allimoveis')
 def index():
     try:
         cunn = connect_db()
